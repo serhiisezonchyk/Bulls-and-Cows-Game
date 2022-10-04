@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Bulls And Cows</string>
+    <string name="start_string_button">Start</string>
+    <string name="dev_string_button">Developers</string>
+    <string name="exit_string_button">Exit</string>
+    <string name="logo_name_string">Bulls &amp; Cows</string>
+</resources>
