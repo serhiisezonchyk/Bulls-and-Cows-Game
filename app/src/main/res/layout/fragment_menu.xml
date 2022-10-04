@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/back_main"
+    android:id="@+id/fragmentContainer"
+    tools:context=".fragments.MenuFragment">
+
+    <Button
+        android:id="@+id/startButton"
+        android:layout_width="160dp"
+        android:layout_height="60dp"
+        android:text="@string/start_string_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.42"
+        android:backgroundTint="@color/buttons"
+        />
+    <Button
+        android:id="@+id/devInfoButton"
+        android:layout_width="160dp"
+        android:layout_height="60dp"
+        android:text="@string/dev_string_button"
+        app:layout_constraintStart_toStartOf="@id/startButton"
+        app:layout_constraintTop_toBottomOf="@+id/startButton"
+        android:backgroundTint="@color/buttons"/>
+    <Button
+        android:id="@+id/exitButton"
+        android:layout_width="160dp"
+        android:layout_height="60dp"
+        android:text="@string/exit_string_button"
+        app:layout_constraintStart_toStartOf="@id/devInfoButton"
+        app:layout_constraintTop_toBottomOf="@+id/devInfoButton"
+        android:backgroundTint="@color/buttons"/>
+
+    <Spinner
+        android:id="@+id/levelSpinner"
+        android:layout_width="160dp"
+        android:layout_height="60dp"
+        app:layout_constraintStart_toStartOf="@+id/exitButton"
+        app:layout_constraintTop_toBottomOf="@+id/exitButton"
+        android:background="@color/buttons"
+        android:textAlignment="center"
+        android:entries="@array/hard_levels_string"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

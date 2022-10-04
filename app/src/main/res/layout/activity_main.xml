@@ -5,43 +5,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    android:background="@drawable/back_main">
-    <Button
-        android:id="@+id/startButton"
-        android:layout_width="160dp"
-        android:layout_height="60dp"
-        android:text="@string/start_string_button"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.42"
-        android:backgroundTint="@color/buttons"
-        />
-    <Button
-        android:id="@+id/devInfoButton"
-        android:layout_width="160dp"
-        android:layout_height="60dp"
-        android:text="@string/dev_string_button"
-        app:layout_constraintStart_toStartOf="@id/startButton"
-        app:layout_constraintTop_toBottomOf="@+id/startButton"
-        android:backgroundTint="@color/buttons"/>
-    <Button
-        android:id="@+id/exitButton"
-        android:layout_width="160dp"
-        android:layout_height="60dp"
-        android:text="@string/exit_string_button"
-        app:layout_constraintStart_toStartOf="@id/devInfoButton"
-        app:layout_constraintTop_toBottomOf="@+id/devInfoButton"
-        android:backgroundTint="@color/buttons"/>
+    android:background="@drawable/back_main"
+    android:id="@+id/fragmentContainer"
+    tools:context=".MainActivity">
 
-    <Spinner
-        android:id="@+id/levelSpinner"
-        android:layout_width="160dp"
-        android:layout_height="60dp"
-        app:layout_constraintStart_toStartOf="@+id/exitButton"
-        app:layout_constraintTop_toBottomOf="@+id/exitButton"
-        android:backgroundTint="@color/buttons"
-        />
 </androidx.constraintlayout.widget.ConstraintLayout>
