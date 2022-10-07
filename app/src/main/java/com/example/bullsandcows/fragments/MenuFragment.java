@@ -24,6 +24,7 @@ public class MenuFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Spinner spinner = view.findViewById(R.id.levelSpinner);
+        //Програмування обробника події натискання на спінер
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent,
                                        View itemSelected, int selectedItemPosition, long selectedId) {
@@ -35,15 +36,19 @@ public class MenuFragment extends Fragment {
                     case 2: hard_level +=6;break;
 
                 }
+                //Створення спливаючої підсказки
                 Toast toast = Toast.makeText(view.getContext().getApplicationContext(),
                         "You must guess "+ hard_level+" numbers", Toast.LENGTH_SHORT);
                 toast.show();
             }
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
+            public void onNothingSelected(AdapterView<?> parent) {}
         });
+
         view.findViewById(R.id.devInfoButton).setOnClickListener(v->{
+            //Завантаження фрагменту з інформацією про розробика
+            //Створення об'єкту фрагменту
             DevFragment devFragment = DevFragment.newInstance();
+            //Втсановлення його як поточного
             devFragment.setTargetFragment(this, 0);
             getFragmentManager().beginTransaction()
                     .addToBackStack(null)
@@ -52,6 +57,7 @@ public class MenuFragment extends Fragment {
         });
 
         view.findViewById(R.id.startButton).setOnClickListener(v->{
+            //Завантаження фрагменту з ігровим полем
             GameFieldFragment gameFragment = GameFieldFragment.newInstance(hard_level);
             gameFragment.setTargetFragment(this, 0);
             getFragmentManager().beginTransaction()
@@ -60,12 +66,14 @@ public class MenuFragment extends Fragment {
                     .commit();
         });
 
+        //Вихід з додатку
         view.findViewById(R.id.exitButton).setOnClickListener(v->{
             getActivity().finishAffinity();
         });
 
     }
 
+    //Повернення макетного файлу для відображення
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

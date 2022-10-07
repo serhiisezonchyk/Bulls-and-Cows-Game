@@ -32,6 +32,7 @@ import java.util.Collections;
  * create an instance of this fragment.
  */
 public class GameFieldFragment extends Fragment {
+
     private  static final String ARG_VALUE = "VALUE";
     private ArrayList<Attemp> attempList = new ArrayList<>();
     private Integer attemp = 1;
@@ -40,6 +41,7 @@ public class GameFieldFragment extends Fragment {
 
     private EditText et;
     private ListView listView;
+
     public static GameFieldFragment newInstance(Integer numCount){
         Bundle args = new Bundle();
         args.putInt(ARG_VALUE, numCount);
@@ -53,12 +55,10 @@ public class GameFieldFragment extends Fragment {
         numCount = getArguments().getInt(ARG_VALUE);
         TextView t = view.findViewById(R.id.textViewRes);
         t.setText("Guess " + numCount +" numbers:");
-
         et = view.findViewById(R.id.et);
+        //Обмеження на введення кількості цифр
         et.setFilters(new InputFilter[] {new InputFilter.LengthFilter(numCount)});
-
         magic_nums = NumberRandomizer.getRandNum(numCount);
-
         view.findViewById(R.id.home_button).setOnClickListener(v-> {
             MenuFragment menuFragment = MenuFragment.newInstance();
             menuFragment.setTargetFragment(null, 0);
@@ -67,22 +67,27 @@ public class GameFieldFragment extends Fragment {
                     .replace(R.id.fragmentContainer, menuFragment)
                     .commit();
         });
-
+        //Обробник кнопки перевірки значень
         view.findViewById(R.id.confirmBut).setOnClickListener(v-> {
             Integer [] userString = BullsAndCows.getArrFromStr(String.valueOf(et.getText()),numCount);
+            //Отримання биків
             Integer bulls = BullsAndCows.getBulls(userString,magic_nums, numCount);
+            //Отримання корів
             Integer cows = BullsAndCows.getCows(userString,magic_nums, numCount);
             if(bulls == numCount){
                 attempList.add(new Attemp(attemp,Integer.parseInt(String.valueOf(et.getText())),bulls,cows));
+                //Метод для відображення спиваючої підсказки
                 popup_result(view, "You are guess the number! Great!");
             }else {
                 attempList.add(new Attemp(attemp,Integer.parseInt(String.valueOf(et.getText())),bulls,cows));
                 popup_result(view, attempList.get(attempList.size()-1).toString());
             }
+            //Очищення поля вводу
+            et.setText("");
             attemp++;
         });
-
         view.findViewById(R.id.restart_button).setOnClickListener(v-> {
+            et.setText("");
             magic_nums = NumberRandomizer.getRandNum(numCount);
             attempList = new ArrayList<>();
             attemp = 1;
@@ -97,25 +102,23 @@ public class GameFieldFragment extends Fragment {
     };
 
     private void popup_result(@NonNull View view, String message){
-
         listView = view.findViewById(R.id.listOfAttemps);
-
         LayoutInflater inflater = getLayoutInflater();
         View layout = inflater.inflate(R.layout.custom_toast, view.findViewById(R.id.toast_layout));
-
+        //Зміна вмісту тексту
         TextView text = layout.findViewById(R.id.text);
         text.setText(message);
-
+        //Створення сплиаючого вікна
         Toast toast = new Toast(view.getContext());
         toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
         toast.setDuration(Toast.LENGTH_LONG);
         toast.setView(layout);
         toast.show();
+        //Створення адаптера для масиву спроб
         ArrayAdapter<Attemp> arrayAdapter
                 = new ArrayAdapter<>((Context) getActivity(), android.R.layout.simple_list_item_1 , BullsAndCows.reverseArrayList(attempList));
-
+        //Заповнення listView
         listView.setAdapter(arrayAdapter);
-
     }
     @Nullable
     @Override

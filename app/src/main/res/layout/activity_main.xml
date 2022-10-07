@@ -8,5 +8,4 @@
     android:background="@drawable/back_main"
     android:id="@+id/fragmentContainer"
     tools:context=".MainActivity">
-
 </androidx.constraintlayout.widget.ConstraintLayout>

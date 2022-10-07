@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class BullsAndCows {
 
+    //Функція переторення символьного рядка в масив
     public static Integer[] getArrFromStr(String str, Integer length){
         Integer [] arr = new Integer [length];
         for(int i = 0;i<length;i++)
@@ -11,20 +12,17 @@ public class BullsAndCows {
         return arr;
     }
 
+    //Функція реверсу масиву
     public static ArrayList<Attemp> reverseArrayList(ArrayList<Attemp> alist)
     {
-        // Arraylist for storing reversed elements
         ArrayList<Attemp> revArrayList = new ArrayList<Attemp>();
         for (int i = alist.size() - 1; i >= 0; i--) {
-
-            // Append the elements in reverse order
             revArrayList.add(alist.get(i));
         }
-
-        // Return the reversed arraylist
         return revArrayList;
     }
 
+    //Отримання точного співпадання позицій
     public static Integer getBulls(Integer[] userString, Integer[] generatedString, Integer lenght){
         Integer  result = 0;
         for (int i = 0 ;i < lenght;i++)
@@ -32,9 +30,10 @@ public class BullsAndCows {
                 result++;
         return result;
     }
+
+    //Отримання числа входжень
     public static Integer getCows(Integer[] userString, Integer[] generatedString, Integer lenght){
         Integer result = 0;
-
         for (int i = 0 ;i < lenght;i++)
             for (int j = 0;j<lenght;j++)
                 if(i!=j)

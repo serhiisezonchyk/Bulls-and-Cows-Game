@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 public class NumberRandomizer {
+
     private static short length;
 
     public NumberRandomizer(short length) {
