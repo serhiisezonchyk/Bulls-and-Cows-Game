@@ -4,6 +4,8 @@
     <string name="dev_string_button">Developers</string>
     <string name="exit_string_button">Exit</string>
     <string name="logo_name_string">Bulls &amp; Cows</string>
+    <string name="your_res_string">Your result will be here</string>
+    <string name="project_dev_string">Project developer:</string>
     <string name="university">©Chernihiv Polytechnic National University</string>
     <string name="developer">Student of group PI-191 Serhiy Sezonchyk</string>
     <string name="restart">Restart</string>

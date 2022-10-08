@@ -1,8 +1,11 @@
 package com.example.bullsandcows.fragments;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -13,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -41,6 +45,8 @@ public class GameFieldFragment extends Fragment {
 
     private EditText et;
     private ListView listView;
+    private Button confBut;
+    private Button restartBut;
 
     public static GameFieldFragment newInstance(Integer numCount){
         Bundle args = new Bundle();
@@ -49,6 +55,7 @@ public class GameFieldFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
+    @SuppressLint("ResourceAsColor")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
@@ -56,6 +63,8 @@ public class GameFieldFragment extends Fragment {
         TextView t = view.findViewById(R.id.textViewRes);
         t.setText("Guess " + numCount +" numbers:");
         et = view.findViewById(R.id.et);
+        confBut = view.findViewById(R.id.confirmBut);
+        restartBut = view.findViewById(R.id.restart_button);
         //Обмеження на введення кількості цифр
         et.setFilters(new InputFilter[] {new InputFilter.LengthFilter(numCount)});
         magic_nums = NumberRandomizer.getRandNum(numCount);
@@ -68,36 +77,44 @@ public class GameFieldFragment extends Fragment {
                     .commit();
         });
         //Обробник кнопки перевірки значень
-        view.findViewById(R.id.confirmBut).setOnClickListener(v-> {
-            Integer [] userString = BullsAndCows.getArrFromStr(String.valueOf(et.getText()),numCount);
-            //Отримання биків
-            Integer bulls = BullsAndCows.getBulls(userString,magic_nums, numCount);
-            //Отримання корів
-            Integer cows = BullsAndCows.getCows(userString,magic_nums, numCount);
-            if(bulls == numCount){
-                attempList.add(new Attemp(attemp,Integer.parseInt(String.valueOf(et.getText())),bulls,cows));
-                //Метод для відображення спиваючої підсказки
-                popup_result(view, "You are guess the number! Great!");
-            }else {
-                attempList.add(new Attemp(attemp,Integer.parseInt(String.valueOf(et.getText())),bulls,cows));
-                popup_result(view, attempList.get(attempList.size()-1).toString());
+        confBut.setOnClickListener(v-> {
+            if(et.getText().toString().length()==numCount) {
+                Integer[] userString = BullsAndCows.getArrFromStr(String.valueOf(et.getText()), numCount);
+                //Отримання биків
+                Integer bulls = BullsAndCows.getBulls(userString, magic_nums, numCount);
+                //Отримання корів
+                Integer cows = BullsAndCows.getCows(userString, magic_nums, numCount);
+                if (bulls == numCount) {
+                    attempList.add(new Attemp(attemp, Integer.parseInt(String.valueOf(et.getText())), bulls, cows));
+                    //Метод для відображення спиваючої підсказки
+                    popup_result(view, "You are guess the number! Great!");
+                    confBut.setEnabled(false);
+                    et.setEnabled(false);
+                } else {
+                    attempList.add(new Attemp(attemp, Integer.parseInt(String.valueOf(et.getText())), bulls, cows));
+                    popup_result(view, attempList.get(attempList.size() - 1).toString());
+                }
+                //Очищення поля вводу
+                et.setText("");
+                attemp++;
             }
-            //Очищення поля вводу
-            et.setText("");
-            attemp++;
         });
-        view.findViewById(R.id.restart_button).setOnClickListener(v-> {
-            et.setText("");
-            magic_nums = NumberRandomizer.getRandNum(numCount);
-            attempList = new ArrayList<>();
-            attemp = 1;
-            et.setText("");
-            ArrayAdapter<Attemp> arrayAdapter
-                    = new ArrayAdapter<>((Context) getActivity(), android.R.layout.simple_list_item_1 , attempList);
-            listView.setAdapter(arrayAdapter);
-            Toast toast = Toast.makeText(view.getContext().getApplicationContext(),
-                    "Number was updated", Toast.LENGTH_SHORT);
-            toast.show();
+        restartBut.setOnClickListener(v-> {
+            if(!attempList.isEmpty()) {
+                et.setEnabled(true);
+                confBut.setEnabled(true);
+                et.setText("");
+                magic_nums = NumberRandomizer.getRandNum(numCount);
+                attempList = new ArrayList<>();
+                attemp = 1;
+                et.setText("");
+                ArrayAdapter<Attemp> arrayAdapter
+                        = new ArrayAdapter<>((Context) getActivity(), android.R.layout.simple_list_item_1, attempList);
+                listView.setAdapter(arrayAdapter);
+                Toast toast = Toast.makeText(view.getContext().getApplicationContext(),
+                        "Number was updated", Toast.LENGTH_SHORT);
+                toast.show();
+            }
         });
     };
 
