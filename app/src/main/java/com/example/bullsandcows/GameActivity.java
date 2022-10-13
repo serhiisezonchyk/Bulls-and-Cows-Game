@@ -1,43 +1,24 @@
-package com.example.bullsandcows.fragments;
+package com.example.bullsandcows;
 
-import android.annotation.SuppressLint;
+import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
-import android.graphics.Color;
+import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.ColorInt;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.text.InputFilter;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.example.bullsandcows.Attemp;
-import com.example.bullsandcows.BullsAndCows;
-import com.example.bullsandcows.NumberRandomizer;
-import com.example.bullsandcows.R;
-
 import java.util.ArrayList;
-import java.util.Collections;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link GameFieldFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class GameFieldFragment extends Fragment {
+public class GameActivity extends AppCompatActivity {
 
-    private  static final String ARG_VALUE = "VALUE";
+    public static final String ARG_VALUE = "ARG_VALUE";
     private ArrayList<Attemp> attempList = new ArrayList<>();
     private Integer attemp = 1;
     private Integer [] magic_nums;
@@ -48,36 +29,25 @@ public class GameFieldFragment extends Fragment {
     private Button confBut;
     private Button restartBut;
 
-    public static GameFieldFragment newInstance(Integer numCount){
-        Bundle args = new Bundle();
-        args.putInt(ARG_VALUE, numCount);
-        GameFieldFragment fragment = new GameFieldFragment();
-        fragment.setArguments(args);
-        return fragment;
-    }
-    @SuppressLint("ResourceAsColor")
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){
-        super.onViewCreated(view, savedInstanceState);
-        numCount = getArguments().getInt(ARG_VALUE);
-        TextView t = view.findViewById(R.id.textViewRes);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_game);
+        numCount = getIntent().getIntExtra(ARG_VALUE,4);
+        TextView t = findViewById(R.id.textViewRes);
         t.setText("Guess " + numCount +" numbers:");
-        et = view.findViewById(R.id.et);
-        confBut = view.findViewById(R.id.confirmBut);
-        restartBut = view.findViewById(R.id.restart_button);
+        et = findViewById(R.id.et);
+        confBut = findViewById(R.id.confirmBut);
+        restartBut = findViewById(R.id.restart_button);
         //Обмеження на введення кількості цифр
         et.setFilters(new InputFilter[] {new InputFilter.LengthFilter(numCount)});
         magic_nums = NumberRandomizer.getRandNum(numCount);
-        view.findViewById(R.id.home_button).setOnClickListener(v-> {
-            MenuFragment menuFragment = MenuFragment.newInstance();
-            menuFragment.setTargetFragment(null, 0);
-            getFragmentManager().beginTransaction()
-                    .addToBackStack(null)
-                    .replace(R.id.fragmentContainer, menuFragment)
-                    .commit();
+        findViewById(R.id.home_button).setOnClickListener(v-> {
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
         });
         //Обробник кнопки перевірки значень
-        confBut.setOnClickListener(v-> {
+        findViewById(R.id.confirmBut).setOnClickListener(v-> {
             if(et.getText().toString().length()==numCount) {
                 Integer[] userString = BullsAndCows.getArrFromStr(String.valueOf(et.getText()), numCount);
                 //Отримання биків
@@ -87,60 +57,56 @@ public class GameFieldFragment extends Fragment {
                 if (bulls == numCount) {
                     attempList.add(new Attemp(attemp, Integer.parseInt(String.valueOf(et.getText())), bulls, cows));
                     //Метод для відображення спиваючої підсказки
-                    popup_result(view, "You are guess the number! Great!");
+                    popup_result("You are guess the number! Great!");
+                    et.setEnabled(false);
                     confBut.setEnabled(false);
                     et.setEnabled(false);
                 } else {
                     attempList.add(new Attemp(attemp, Integer.parseInt(String.valueOf(et.getText())), bulls, cows));
-                    popup_result(view, attempList.get(attempList.size() - 1).toString());
+                    popup_result(attempList.get(attempList.size() - 1).toString());
                 }
                 //Очищення поля вводу
                 et.setText("");
                 attemp++;
             }
         });
-        restartBut.setOnClickListener(v-> {
+        findViewById(R.id.restart_button).setOnClickListener(v-> {
             if(!attempList.isEmpty()) {
                 et.setEnabled(true);
                 confBut.setEnabled(true);
+                et.setEnabled(true);
                 et.setText("");
                 magic_nums = NumberRandomizer.getRandNum(numCount);
                 attempList = new ArrayList<>();
                 attemp = 1;
                 et.setText("");
                 ArrayAdapter<Attemp> arrayAdapter
-                        = new ArrayAdapter<>((Context) getActivity(), android.R.layout.simple_list_item_1, attempList);
+                        = new ArrayAdapter<>((Context) this, android.R.layout.simple_list_item_1, attempList);
                 listView.setAdapter(arrayAdapter);
-                Toast toast = Toast.makeText(view.getContext().getApplicationContext(),
+                Toast toast = Toast.makeText(this,
                         "Number was updated", Toast.LENGTH_SHORT);
                 toast.show();
             }
         });
-    };
+    }
 
-    private void popup_result(@NonNull View view, String message){
-        listView = view.findViewById(R.id.listOfAttemps);
+    private void popup_result( String message){
+        listView = findViewById(R.id.listOfAttemps);
         LayoutInflater inflater = getLayoutInflater();
-        View layout = inflater.inflate(R.layout.custom_toast, view.findViewById(R.id.toast_layout));
+        View layout = inflater.inflate(R.layout.custom_toast, findViewById(R.id.toast_layout));
         //Зміна вмісту тексту
         TextView text = layout.findViewById(R.id.text);
         text.setText(message);
         //Створення сплиаючого вікна
-        Toast toast = new Toast(view.getContext());
+        Toast toast = new Toast(this);
         toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
         toast.setDuration(Toast.LENGTH_LONG);
         toast.setView(layout);
         toast.show();
         //Створення адаптера для масиву спроб
         ArrayAdapter<Attemp> arrayAdapter
-                = new ArrayAdapter<>((Context) getActivity(), android.R.layout.simple_list_item_1 , BullsAndCows.reverseArrayList(attempList));
+                = new ArrayAdapter<>((Context) this, android.R.layout.simple_list_item_1 , BullsAndCows.reverseArrayList(attempList));
         //Заповнення listView
         listView.setAdapter(arrayAdapter);
     }
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_game_field, container, false);
-    }
-
 }

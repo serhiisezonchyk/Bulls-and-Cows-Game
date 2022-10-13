@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -10,26 +10,19 @@
         android:id="@+id/home_button"
         android:layout_width="100dp"
         android:layout_height="50dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.02"
-        app:layout_constraintHorizontal_bias="0.05"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
         android:backgroundTint="@color/green"
-        android:text="@string/home"/>
+        android:text="Home"/>
     <TextView
         android:id="@+id/textDev"
         android:layout_width="170dp"
         android:layout_height="30dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.25"
-        android:text="@string/project_dev_string"
+        android:text="Project Developer:"
         android:textSize="20dp"
+        android:layout_above="@id/imageView"
         android:textAlignment="center"
+        android:layout_centerHorizontal="true"
         android:textColor="@color/black"
         android:fontFamily="sans-serif-medium"/>
     <ImageView
@@ -37,16 +30,13 @@
         android:layout_width="300dp"
         android:layout_height="300dp"
         android:src="@drawable/developer"
-        app:layout_constraintEnd_toEndOf="@+id/textDev"
-        app:layout_constraintStart_toStartOf="@+id/textDev"
-        app:layout_constraintTop_toBottomOf="@id/textDev" />
+        android:layout_centerInParent="true" />
     <TextView
         android:id="@+id/textDevInfo"
         android:layout_width="270dp"
         android:layout_height="50dp"
-        app:layout_constraintEnd_toEndOf="@+id/imageView"
-        app:layout_constraintStart_toStartOf="@+id/imageView"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        android:layout_below="@id/imageView"
+        android:layout_centerHorizontal="true"
         android:textAlignment="center"
         android:textColor="@color/black"
         android:fontFamily="sans-serif-medium"
@@ -56,12 +46,11 @@
         android:id="@+id/university"
         android:layout_width="270dp"
         android:layout_height="20dp"
-        app:layout_constraintEnd_toEndOf="@+id/imageView"
-        app:layout_constraintStart_toStartOf="@+id/textDevInfo"
-        app:layout_constraintTop_toBottomOf="@+id/textDevInfo"
+        android:layout_below="@id/textDevInfo"
+        android:layout_centerHorizontal="true"
         android:textAlignment="center"
         android:textColor="@color/black"
         android:fontFamily="sans-serif-medium"
         android:textSize="12dp"
         android:text="@string/university"/>
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>
