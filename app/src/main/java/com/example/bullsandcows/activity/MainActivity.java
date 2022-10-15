@@ -1,4 +1,4 @@
-package com.example.bullsandcows;
+package com.example.bullsandcows.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,6 +7,10 @@ import android.widget.AdapterView;
 import android.widget.Spinner;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.bullsandcows.R;
+import com.example.bullsandcows.activity.DevActivity;
+import com.example.bullsandcows.activity.GameActivity;
 
 public class MainActivity extends AppCompatActivity {
     private int hard_level = 0;
@@ -36,13 +40,13 @@ public class MainActivity extends AppCompatActivity {
         });
 
         findViewById(R.id.devInfoButton).setOnClickListener(v->{
-            Intent intent = new Intent(this,DevActivity.class);
+            Intent intent = new Intent(this, DevActivity.class);
             startActivity(intent);
         });
 
         findViewById(R.id.startButton).setOnClickListener(v->{
             //Завантаження фрагменту з ігровим полем
-            Intent intent = new Intent(this,GameActivity.class);
+            Intent intent = new Intent(this, GameActivity.class);
             intent.putExtra(GameActivity.ARG_VALUE, hard_level);
             startActivity(intent);
         });

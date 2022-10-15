@@ -1,9 +1,11 @@
-package com.example.bullsandcows;
+package com.example.bullsandcows.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+
+import com.example.bullsandcows.R;
 
 public class DevActivity extends AppCompatActivity {
 
