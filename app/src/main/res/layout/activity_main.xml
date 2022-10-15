@@ -1,10 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/back_main"
     android:id="@+id/fragmentContainer"
-    tools:context=".MainActivity">
-</androidx.constraintlayout.widget.ConstraintLayout>
+    tools:context=".activity.MainActivity">
+
+    <Button
+        android:id="@+id/startButton"
+        android:layout_width="160dp"
+        android:layout_height="60dp"
+        android:backgroundTint="@color/buttons"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="260dp"
+        android:text="@string/start_string_button" />
+
+    <Button
+        android:id="@+id/devInfoButton"
+        android:layout_width="160dp"
+        android:layout_height="60dp"
+        android:text="@string/dev_string_button"
+        android:layout_below="@id/startButton"
+        android:layout_alignEnd="@id/startButton"
+        android:backgroundTint="@color/buttons"/>
+    <Button
+        android:id="@+id/exitButton"
+        android:layout_width="160dp"
+        android:layout_height="60dp"
+        android:text="@string/exit_string_button"
+        android:layout_below="@id/devInfoButton"
+        android:layout_alignEnd="@id/devInfoButton"
+        android:backgroundTint="@color/buttons"/>
+    <Spinner
+        android:id="@+id/levelSpinner"
+        android:layout_width="160dp"
+        android:layout_height="60dp"
+        android:layout_below="@id/exitButton"
+        android:layout_alignEnd="@id/exitButton"
+        android:background="@color/buttons"
+        android:textAlignment="center"
+        android:entries="@array/hard_levels_string"/>
+</RelativeLayout>
