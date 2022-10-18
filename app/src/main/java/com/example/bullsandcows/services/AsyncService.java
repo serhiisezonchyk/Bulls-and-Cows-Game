@@ -9,6 +9,9 @@ import androidx.annotation.Nullable;
 
 import com.example.bullsandcows.BuildConfig;
 import com.example.bullsandcows.obs.App;
+import com.example.bullsandcows.threads.LooperThreadTask;
+import com.example.bullsandcows.threads.Task;
+import com.example.bullsandcows.threads.TaskListener;
 
 public class AsyncService extends IntentService {
 
@@ -27,9 +30,7 @@ public class AsyncService extends IntentService {
     public static final String USER_NUM = "USER_NUM";
     public static final String RAND_NUM = "RAND_NUM";
 
-
-
-    private ServiceBullsAndCows serviceBullsAndCows= new ServiceBullsAndCows(TAG);
+    private Task<Void> currentTask;
 
     public AsyncService() {
         super(AsyncService.class.getSimpleName());
@@ -69,29 +70,48 @@ public class AsyncService extends IntentService {
         App app = (App) getApplicationContext();
 
         int length = intent.getIntExtra(LENGTH,4);
-        try {
-            switch (action) {
-                case ACTION_GET_RAND_NUM:{
-                    serviceBullsAndCows.getRandNum(app,length);
-                    break;
-                }
-                case ACTION_GET_BULLS:{
-                    int[] userString = intent.getIntArrayExtra(USER_NUM);
-                    int[] generatedString = intent.getIntArrayExtra(RAND_NUM);
-                    serviceBullsAndCows.getBulls(app,userString,generatedString,length);
-                    break;
-                }
-                case ACTION_GET_COWS:{
-                    int[] userString = intent.getIntArrayExtra(USER_NUM);
-                    int[] generatedString = intent.getIntArrayExtra(RAND_NUM);
-                    serviceBullsAndCows.getCows(app,userString,generatedString,length);
-                    break;
-                }
-                default:
-                    throw new RuntimeException("Unknown action!");
+        switch (action) {
+            case ACTION_GET_RAND_NUM:{
+                currentTask = createGenerateTask(app,length);
+                currentTask.execute(new TaskListener<Void>() {
+                    @Override public void onSuccsess(Void result){}
+                    @Override public void onError(Throwable error){}
+                });
+                break;
             }
-        } catch (InterruptedException e) {
-            Log.e(TAG, "Job has been interrupted");
+            case ACTION_GET_BULLS:{
+                int[] userString = intent.getIntArrayExtra(USER_NUM);
+                int[] generatedString = intent.getIntArrayExtra(RAND_NUM);
+                currentTask = createGetBullsTask(app,length,generatedString,userString);
+                currentTask.execute(new TaskListener<Void>() {
+                    @Override public void onSuccsess(Void result){}
+                    @Override public void onError(Throwable error){}
+                });
+                break;
+            }
+            case ACTION_GET_COWS:{
+                int[] userString = intent.getIntArrayExtra(USER_NUM);
+                int[] generatedString = intent.getIntArrayExtra(RAND_NUM);
+                currentTask = createGetCowsTask(app,length,generatedString,userString);
+                currentTask.execute(new TaskListener<Void>() {
+                    @Override public void onSuccsess(Void result){}
+                    @Override public void onError(Throwable error){}
+                });
+                break;
+            }
+            default:
+                throw new RuntimeException("Unknown action!");
         }
     }
+
+    private Task<Void> createGenerateTask(App app, int length){
+        return new LooperThreadTask<Void>(new GenerateNumCallable(app,TAG,length));
+    }
+    private Task<Void> createGetBullsTask(App app, int length, int[] generatedString, int [] userString){
+        return new LooperThreadTask<Void>(new BullsAndCowsCallable(app,TAG,true,length,generatedString,userString));
+    }
+    private Task<Void> createGetCowsTask(App app, int length, int[] generatedString, int [] userString){
+        return new LooperThreadTask<Void>(new BullsAndCowsCallable(app,TAG,false,length,generatedString,userString));
+    }
+
 }
