@@ -18,6 +18,8 @@ public abstract class BaseTask<T> implements  Task<T> {
         if(cancelled) return;
         executed = true;
         this.taskListener = listener;
+
+
         start();
     }
 

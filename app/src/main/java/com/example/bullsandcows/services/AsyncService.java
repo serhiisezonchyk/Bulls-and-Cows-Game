@@ -31,7 +31,7 @@ public class AsyncService extends IntentService {
     public static final String RAND_NUM = "RAND_NUM";
 
     private Task<Void> currentTask;
-    
+
     public AsyncService() {
         super(AsyncService.class.getSimpleName());
     }
@@ -61,8 +61,6 @@ public class AsyncService extends IntentService {
     public void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "onDestroy");
-        if(currentTask!=null)
-            currentTask.cancel();
     }
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
